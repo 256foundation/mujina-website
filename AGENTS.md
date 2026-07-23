@@ -36,10 +36,11 @@ just install    # npm install
 just dev        # dev server with hot reload
 just build      # static build to .vitepress/dist (honors DOCS_BASE)
 just preview    # build, then serve the production build
+just checks     # all checks; today that is the build
 just ci         # what CI runs: npm ci + build
 ```
 
-Always verify with `just build` before committing; it fails on dead
+Always verify with `just checks` before committing; it fails on dead
 internal links.
 
 ## Content organization: Diataxis

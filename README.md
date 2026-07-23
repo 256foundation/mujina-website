@@ -15,9 +15,9 @@ just install   # npm install
 just dev       # dev server with hot reload
 ```
 
-Run `just` with no arguments to list the other recipes. `just
-build` builds the static site and fails on dead internal links; run
-it before you open a pull request.
+Run `just` with no arguments to list the other recipes. Run `just
+checks` before you open a pull request; it builds the site and
+fails on dead internal links.
 
 ## Where things are
 

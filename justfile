@@ -25,6 +25,9 @@ build:
 preview: build
     npm run preview -- --host {{host}} --port {{port}}
 
+# Run all checks (before commit, push, merge, release)
+checks: build
+
 # What CI runs: clean install, then build
 ci:
     npm ci

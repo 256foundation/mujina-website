@@ -26,7 +26,7 @@ setup. Two rules:
   site's conventions: the Diataxis organization, the prose
   register (plain technical English, like a good man page), and
   the vocabulary rules. Contributions are reviewed against it.
-- Run `just build` before you open the PR. It builds the site and
+- Run `just checks` before you open the PR. It builds the site and
   fails on dead internal links.
 
 ## The compatibility matrix
@@ -63,7 +63,7 @@ for build and deploy plumbing.
 
 ## Pull requests
 
-Rebase on the latest `main`, run `just build`, and give the PR a
+Rebase on the latest `main`, run `just checks`, and give the PR a
 conventional-commit title. Commit messages describe the individual
 changes; use the PR body for context that ties them together. If
 the work is unfinished but you want early feedback, open the PR as
