@@ -8,7 +8,7 @@ hero:
     Mining firmware you own: read every line, change what you like,
     pay no dev fee. One codebase for hardware from any vendor.
   image:
-    src: /mujina.png
+    src: /mujina.webp
     alt: >-
       The Mujina mascot, an armored badger. Mujina is the Japanese
       word for the badger, a shape-shifter in folklore.
