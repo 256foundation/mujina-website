@@ -58,6 +58,33 @@
   --mujina-hero-tint: rgba(208, 85, 85, 0.06);
 }
 
+/* Wordmark: the hero name set in Bridge OFFicer (Iconian Fonts),
+   the face of the mujina wordmark on the project's GitHub social
+   card. Subset to the six letters of the name; nothing else uses
+   it. Iconian treats nonprofit use as noncommercial. */
+@font-face {
+  font-family: "Bridge Officer";
+  src: url("./fonts/bridge-officer.woff2") format("woff2");
+  font-display: swap;
+}
+
+/* Sized as a wordmark above the heading text, not matched to it:
+   the wide face runs visually low at the default heading size. The
+   glyphs fit inside the em box (ascent 0.825, descent 0.165), so
+   the tight line height cannot clip the j's descender. */
+.VPHome .VPHero .name.clip {
+  font-family: "Bridge Officer", var(--vp-font-family-base);
+  text-transform: lowercase;
+  font-size: 44px;
+  line-height: 1.1;
+}
+@media (min-width: 640px) {
+  .VPHome .VPHero .name.clip { font-size: 72px; }
+}
+@media (min-width: 960px) {
+  .VPHome .VPHero .name.clip { font-size: 96px; }
+}
+
 /* Hero mascot: the default theme caps the hero image small; give the
    portrait figure room. */
 @media (min-width: 640px) {
