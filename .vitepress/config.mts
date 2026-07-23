@@ -33,14 +33,16 @@ export default defineConfig({
   head: [
     ['link', { rel: 'icon', type: 'image/png', href: `${base}favicon.png` }],
     // Social link previews. og:image requires an absolute URL, so it
-    // points at production even in a fork preview. The summary card
-    // type shows the tall mascot art as a thumbnail; a large card
-    // would crop it into a banner.
+    // points at production even in a fork preview. The card is the
+    // mascot head on the site's dark gray, composed from
+    // rkuester/mujina-logo-set at the standard 1200x630.
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:title', content: title }],
     ['meta', { property: 'og:description', content: description }],
-    ['meta', { property: 'og:image', content: 'https://mujina.org/mujina.png' }],
-    ['meta', { name: 'twitter:card', content: 'summary' }]
+    ['meta', { property: 'og:image', content: 'https://mujina.org/og-card.png' }],
+    ['meta', { property: 'og:image:width', content: '1200' }],
+    ['meta', { property: 'og:image:height', content: '630' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }]
   ],
 
   themeConfig: {
