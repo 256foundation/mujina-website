@@ -1,20 +1,50 @@
 # mujina.org
 
-This repository serves [mujina.org](https://mujina.org), which redirects
-to the Mujina source repository:
+The source for [mujina.org](https://mujina.org), the website of the
+Mujina open source Bitcoin mining firmware project. The site is
+built with [VitePress](https://vitepress.dev) and deployed to
+GitHub Pages. The miner firmware itself lives at
 <https://github.com/256foundation/mujina>.
 
-Mujina will want a proper user-facing site eventually. Until then,
-pointing at the source repository beats pointing at a stale page. This
-site used to carry the original grant proposal, which remains available
-in git history.
+## Run the site locally
 
-## How the redirect works
+You need Node.js and [just](https://just.systems/).
 
-GitHub Pages serves static files and cannot issue server-side
-redirects, so the redirect happens in the browser. `index.html` carries
-an instant meta refresh pointing at the source repository. `404.html`
-carries the same refresh, so stale deep links redirect too instead of
-showing an error page. `CNAME` binds the custom domain to this
-repository, and `.nojekyll` tells Pages to publish these files as-is
-rather than running a Jekyll build.
+```
+just install   # npm install
+just dev       # dev server with hot reload
+```
+
+Run `just` with no arguments to list the other recipes. `just
+build` builds the static site and fails on dead internal links; run
+it before you open a pull request.
+
+## Where things are
+
+- Pages are markdown, organized by [Diataxis](https://diataxis.fr)
+  mode: `tutorial/`, `howto/`, `reference/`, `explanation/`.
+  `index.md` is the landing page; `community.md` sits outside the
+  modes.
+- Nav and sidebar: `.vitepress/config.mts`.
+- Theme: CSS-only overrides in `.vitepress/theme/custom.css`.
+- Images and other static assets: `public/`.
+
+## Contributing
+
+Pull requests are welcome. [CONTRIBUTING.md](CONTRIBUTING.md)
+covers the workflow, commit atomicity, and message conventions.
+[AGENTS.md](AGENTS.md) records the site's content conventions: the
+organization, the prose register, and what the compatibility
+matrix may claim.
+
+The [hardware compatibility
+matrix](reference/hardware-compatibility.md) depends on the
+community most of all: if you maintain a fork or a board driver,
+its row is yours to keep accurate.
+
+## Deployment
+
+`.github/workflows/deploy.yml` builds and deploys on push to
+`main`. One workflow serves both cases: `DOCS_BASE` sets the base
+path for fork previews, and the CNAME for mujina.org is emitted
+only when building the production repository.

@@ -1,0 +1,72 @@
+# Build the VitePress site and deploy it to GitHub Pages.
+#
+# The justfile is the source of truth for building; this workflow is
+# plumbing (checkout, cache, `just ci`, deploy).
+#
+# The same workflow serves two cases:
+#
+# - Production (the 256foundation repo): built with base "/" and a
+#   CNAME for mujina.org.
+# - Fork previews: built with base "/<repo-name>/" and no CNAME, so a
+#   preview never contends for the production domain.
+#
+# Update PRODUCTION_REPO if the repository is renamed.
+
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  PRODUCTION_REPO: 256foundation/mujina-website
+  PRODUCTION_DOMAIN: mujina.org
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history so lastUpdated timestamps are accurate.
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: extractions/setup-just@v3
+      - name: Build site
+        run: |
+          if [ "$GITHUB_REPOSITORY" = "$PRODUCTION_REPO" ]; then
+            export DOCS_BASE=/
+          else
+            export DOCS_BASE="/${GITHUB_REPOSITORY#*/}/"
+          fi
+          just ci
+          if [ "$GITHUB_REPOSITORY" = "$PRODUCTION_REPO" ]; then
+            echo "$PRODUCTION_DOMAIN" > .vitepress/dist/CNAME
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .vitepress/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,191 @@
+/*
+ * Mujina site theme overrides, layered on the VitePress default theme.
+ *
+ * Accent: the muted armor red of the Mujina mascot, used sparingly for
+ * links, active nav, and primary buttons. Dark surfaces stay neutral
+ * graphite so the accent alone carries the warmth.
+ */
+
+:root {
+  --vp-font-family-base: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --vp-font-family-mono: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --vp-layout-max-width: 1440px;
+
+  /* Sampled toward the mascot's armor red (#762822 lit, deeper in
+     shadow); brand-3, the pressed state, is the armor color itself. */
+  --vp-c-brand-1: #8e332b;
+  --vp-c-brand-2: #a1443a;
+  --vp-c-brand-3: #762822;
+  --vp-c-brand-soft: rgba(142, 51, 43, 0.14);
+
+  --vp-button-brand-bg: var(--vp-c-brand-1);
+  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
+  --vp-button-brand-active-bg: var(--vp-c-brand-3);
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-hover-border: transparent;
+  --vp-button-brand-active-border: transparent;
+
+  --vp-home-hero-name-color: var(--vp-c-brand-1);
+
+  /* Accent tint at the top of the hero's PCB background. */
+  --mujina-hero-tint: rgba(142, 51, 43, 0.08);
+}
+
+/* Dark mode: neutral graphite surfaces. */
+.dark {
+  --vp-c-bg: #0e0f12;
+  --vp-c-bg-alt: #16171c;
+  --vp-c-bg-elv: #16171c;
+  --vp-c-bg-soft: #1b1c22;
+
+  --vp-c-text-1: #e7e8ec;
+  --vp-c-text-2: #b5b7bf;
+  --vp-c-text-3: #999ba4;
+
+  --vp-c-divider: #272931;
+  --vp-c-border: #272931;
+  --vp-c-gutter: #0e0f12;
+
+  /* Lift the accent for contrast on dark surfaces. Lifting the
+     orange-leaning armor red would read salmon, so the dark accent
+     shifts hue toward neutral red instead of gaining lightness. */
+  --vp-c-brand-1: #d05555;
+  --vp-c-brand-2: #da6b6b;
+  --vp-c-brand-3: #b34444;
+  --vp-c-brand-soft: rgba(208, 85, 85, 0.16);
+
+  --mujina-hero-tint: rgba(208, 85, 85, 0.06);
+}
+
+/* Hero mascot: the default theme caps the hero image small; give the
+   portrait figure room. */
+@media (min-width: 640px) {
+  .VPHero .image-container {
+    width: 340px;
+    height: 500px;
+  }
+  .VPHero .image-src {
+    max-width: 340px;
+    max-height: 500px;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHero .image-container {
+    width: 400px;
+    height: 580px;
+    /* Default theme floats the image up-left for its glow effect;
+       without a glow it only leaves dead space under the mascot. */
+    transform: none;
+  }
+  .VPHero .image-src {
+    max-width: 400px;
+    max-height: 580px;
+  }
+  /* The tall mascot column otherwise pads the section far below
+     the buttons. Match the air above the hero to the air below it;
+     the default 80px top padding, stacked on the mascot art's own
+     transparent headroom, reads as dead space under the nav. */
+  .VPHome .VPHero {
+    padding-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + 16px);
+    padding-bottom: 16px;
+  }
+  /* Center the text column on the mascot's midline so the height
+     difference reads as composition, not leftover space. */
+  .VPHero .container {
+    align-items: center;
+  }
+}
+
+/* PCB-trace background on the hero: the same 60px pattern
+   256foundation.org uses (crosshair grid, vias, corner pads, trace
+   stubs), tying the two sites visually. Layered under an accent
+   tint at the top and a vignette that fades the pattern into the
+   page background toward the edges. */
+.VPHome .VPHero {
+  background-image:
+    radial-gradient(ellipse at center, transparent 40%, var(--vp-c-bg) 100%),
+    radial-gradient(ellipse at 50% 0%, var(--mujina-hero-tint) 0%, transparent 65%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cdefs%3E%3Cpattern id='p' width='60' height='60' patternUnits='userSpaceOnUse'%3E%3Cline x1='0' y1='30' x2='60' y2='30' stroke='%23888888' stroke-width='0.5'/%3E%3Cline x1='30' y1='0' x2='30' y2='60' stroke='%23888888' stroke-width='0.5'/%3E%3Cline x1='0' y1='0' x2='15' y2='0' stroke='%23666666' stroke-width='0.4'/%3E%3Cline x1='0' y1='0' x2='0' y2='15' stroke='%23666666' stroke-width='0.4'/%3E%3Cline x1='60' y1='60' x2='45' y2='60' stroke='%23666666' stroke-width='0.4'/%3E%3Cline x1='60' y1='60' x2='60' y2='45' stroke='%23666666' stroke-width='0.4'/%3E%3Ccircle cx='30' cy='30' r='2.5' fill='none' stroke='%23888888' stroke-width='0.5'/%3E%3Ccircle cx='30' cy='30' r='1' fill='%23888888'/%3E%3Ccircle cx='0' cy='0' r='1.5' fill='%23666666'/%3E%3Ccircle cx='60' cy='0' r='1.5' fill='%23666666'/%3E%3Ccircle cx='0' cy='60' r='1.5' fill='%23666666'/%3E%3Ccircle cx='60' cy='60' r='1.5' fill='%23666666'/%3E%3Cline x1='15' y1='30' x2='22' y2='30' stroke='%23777777' stroke-width='0.4'/%3E%3Cline x1='38' y1='30' x2='45' y2='30' stroke='%23777777' stroke-width='0.4'/%3E%3Cline x1='30' y1='15' x2='30' y2='22' stroke='%23777777' stroke-width='0.4'/%3E%3Cline x1='30' y1='38' x2='30' y2='45' stroke='%23777777' stroke-width='0.4'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23p)' opacity='0.12'/%3E%3C/svg%3E");
+}
+
+/* Mark links to the source repository with the GitHub logo: the hero
+   action pill and the repository link in home-page content. */
+.VPHero .action a[href="https://github.com/256foundation/mujina"]::before,
+.VPHome .vp-doc a[href="https://github.com/256foundation/mujina"]::before {
+  content: "";
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  margin-right: 0.45em;
+  vertical-align: -0.2em;
+  background-color: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z'/%3E%3C/svg%3E") no-repeat center / contain;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+/* 256 Foundation mark in the footer, no taller than the two footer
+   text lines, absolutely positioned so the footer keeps its height. */
+.VPFooter {
+  position: relative;
+}
+
+.VPFooter .foundation-mark {
+  position: absolute;
+  right: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.VPFooter .foundation-mark img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.VPFooter .foundation-mark .dark-logo {
+  display: none;
+}
+
+.dark .VPFooter .foundation-mark .light-logo {
+  display: none;
+}
+
+.dark .VPFooter .foundation-mark .dark-logo {
+  display: block;
+}
+
+@media (max-width: 639px) {
+  .VPFooter .foundation-mark {
+    display: none;
+  }
+}
+
+/* Reading column: comfortable measure and leading. */
+.vp-doc {
+  line-height: 1.65;
+}
+
+.vp-doc p,
+.vp-doc li {
+  max-width: 72ch;
+}
+
+/* Headings carried by weight, not size jumps. */
+.vp-doc h1 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.vp-doc h2 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  border-top: 1px solid var(--vp-c-divider);
+  padding-top: 1.5rem;
+  margin-top: 3rem;
+}
+
+.vp-doc h3 {
+  font-weight: 600;
+}
