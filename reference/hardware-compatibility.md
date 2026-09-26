@@ -27,6 +27,7 @@ take it up.
 | Intel BZM2 boards           | In progress | [johnny9's fork]      | none yet       |
 
 [mainline]: https://github.com/256foundation/mujina
+[rhapd-bitaxe-gamma]: https://github.com/256foundation/rhapd-bitaxe-gamma
 [bitaxe-raw]: https://github.com/bitaxeorg/bitaxe-raw
 [EmberOne USB-serial]: https://github.com/256foundation/emberone-usbserial-fw
 [Schnitzel's fork]: https://github.com/Schnitzel/mujina
@@ -39,11 +40,12 @@ take it up.
 ### Bitaxe Gamma
 
 One BM1370 ASIC, about 1 TH/s at stock settings. Mining, hardware
-monitoring, and the REST API are functional. The board's ESP32 must
-run the [bitaxe-raw] firmware, which passes the ASIC's serial bus
-through USB; [Set Up a Bitaxe
-Gamma](/howto/set-up-a-bitaxe-gamma) covers flashing it and
-starting the miner.
+monitoring, and the REST API are functional. The board's ESP32 runs
+the [rhapd-bitaxe-gamma] firmware, which passes the ASIC's serial
+bus through USB. Mujina also drives a board that still runs
+[bitaxe-raw], the deprecated firmware rhapd-bitaxe-gamma replaces.
+[Set Up a Bitaxe Gamma](/howto/set-up-a-bitaxe-gamma) covers
+flashing the firmware and starting the miner.
 
 For a newcomer who wants real hardware, this is the board to start
 with: open source, single chip, cheap, and the one mainline

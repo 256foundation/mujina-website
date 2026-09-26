@@ -1,18 +1,24 @@
 # Set Up a Bitaxe Gamma
 
 This guide takes a stock Bitaxe Gamma and puts it under Mujina's
-control: flash the board's ESP32 with bitaxe-raw, connect it, and
-start the miner. It assumes you can build and run mujina-minerd; if
-not, take the [tutorial](/tutorial/first-run) first.
+control: flash the board's ESP32 with rhapd-bitaxe-gamma, connect
+it, and start the miner. It assumes you can build and run
+mujina-minerd; if not, take the [tutorial](/tutorial/first-run)
+first.
 
 The board ships with esp-miner, firmware that mines on its own.
-Under Mujina the ESP32 stops mining: the [bitaxe-raw] firmware only
-passes the ASIC's serial bus, I2C, GPIO, and ADC through USB, and
-mujina-minerd on your computer drives the board.
+Under Mujina the ESP32 stops mining. The [rhapd-bitaxe-gamma]
+firmware passes the ASIC's serial bus, I2C, GPIO, and ADC through
+USB. mujina-minerd on your computer drives the board through those
+connections.
 
-::: info Current as of July 2026
-The flashing steps follow the [bitaxe-raw] README; where they
-drift, the README wins.
+rhapd-bitaxe-gamma replaces bitaxe-raw, which is deprecated. Mujina
+still drives a board that runs bitaxe-raw. To move such a board to
+rhapd-bitaxe-gamma, flash it with the steps below.
+
+::: info Current as of September 2026
+The flashing steps follow the [rhapd-bitaxe-gamma] README; where
+they drift, the README wins.
 :::
 
 ## What you need
@@ -20,48 +26,53 @@ drift, the README wins.
 - A Bitaxe Gamma and its power supply.
 - A USB data cable to your Linux machine.
 - The Rust toolchain, installed with [rustup](https://rustup.rs).
+- The [just](https://just.systems) command runner:
+
+  ```bash
+  cargo install just --locked
+  ```
+
+- Python 3, which the flash recipe runs.
 - Permission to open serial devices. On Debian and Ubuntu, add
   yourself to the `dialout` group, then log in again:
 
-```bash
-sudo usermod -aG dialout $USER
-```
+  ```bash
+  sudo usermod -aG dialout $USER
+  ```
 
-## Flash bitaxe-raw
+## Flash rhapd-bitaxe-gamma
 
-Install the ESP32 toolchain and the flashing tools:
-
-```bash
-RUSTUP_TOOLCHAIN=stable cargo install espup --locked
-espup install
-cargo install cargo-espflash espflash --locked
-```
-
-Load the environment espup installed:
+Clone the firmware and install its toolchain:
 
 ```bash
-. $HOME/export-esp.sh
+git clone https://github.com/256foundation/rhapd-bitaxe-gamma.git
+cd rhapd-bitaxe-gamma
+just setup-tools
 ```
 
-With the board attached over USB, build and flash:
+`just setup-tools` installs espup, the esp Rust toolchain, and
+espflash, each at the version the repository's justfile names.
+
+Hold the BOOT button while attaching power. That puts the ESP32 in
+its bootloader. With the board attached over USB, build and flash:
 
 ```bash
-git clone https://github.com/bitaxeorg/bitaxe-raw.git
-cd bitaxe-raw
-cargo build --release
-cargo espflash flash --release --chip esp32s3
+just flash
 ```
 
-espflash does not restart the ESP32 after flashing. Press the
-board's RESET button to boot bitaxe-raw.
+The recipe restarts the board into rhapd-bitaxe-gamma when the
+flash finishes.
 
-To flash the board again later, hold the BOOT button while
-attaching power; that puts the ESP32 in its bootloader. The same
-route flashes any firmware, including a return to stock.
+To flash the board again later, run `just flash` with no button
+pressed. rhapd-bitaxe-gamma accepts a command that reboots it into
+the bootloader, and the recipe sends that command first. To return
+to stock or to flash any other firmware, hold BOOT while attaching
+power, as above.
 
 ## Check the serial ports
 
-With bitaxe-raw running, the board presents two USB serial ports:
+With rhapd-bitaxe-gamma running, the board presents two USB serial
+ports:
 
 ```bash
 ls /dev/ttyACM*
@@ -95,4 +106,4 @@ API under `/api/v0/boards`.
 - The board's status row: [Hardware
   Compatibility](/reference/hardware-compatibility).
 
-[bitaxe-raw]: https://github.com/bitaxeorg/bitaxe-raw
+[rhapd-bitaxe-gamma]: https://github.com/256foundation/rhapd-bitaxe-gamma
